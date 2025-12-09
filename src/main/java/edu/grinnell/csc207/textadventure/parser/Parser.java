@@ -8,7 +8,7 @@ public class Parser {
         this.in = new Scanner(System.in);
     }
 
-    public Command parse(String input) {
+    public static Command parse(String input) {
 
         if (input.isEmpty()) {
             return new Command("", null);
@@ -37,6 +37,11 @@ public class Parser {
         if (input.startsWith("talk to ".toLowerCase())) {
             String target = input.substring(8).trim();
             return new Command("talk to", target);
+        }
+
+        if (input.startsWith("pick up ".toLowerCase())) {
+            String target = input.substring(8).trim();
+            return new Command("pick up", target);
         }
 
         String[] phrase = input.split("\\s", 2);

@@ -12,8 +12,8 @@ public abstract class Room {
     private final String description;
 
     private final Map<String, Room> exits = new HashMap<>();
-    private final Map<String, String> objects = new HashMap<>();
-    private final Map<String, Item> items = new HashMap<>();
+    protected final Map<String, String> objects = new HashMap<>(); // Might not need this
+    protected final Map<String, Item> items = new HashMap<>();
 
     public Room(String name, String description) {
         this.name = name;
@@ -45,6 +45,10 @@ public abstract class Room {
         objects.put(name.toLowerCase(), talkResponse);
     }
 
+    public void addItem(Item item) {
+        items.put(item.getName().toLowerCase(), item);
+    }
+
     public void talkTo(String target) {
         String response = objects.get(target.toLowerCase());
         if (response == null) {
@@ -74,15 +78,14 @@ public abstract class Room {
         }
     }
 
-    public void pickUp(Item item) {
-        System.out.printf("You picked up %s.\n", item.getName());
-        items.put(item.getName().toLowerCase(), item);
-    }
+    public abstract void pickUp(String itemName);
 
-    public void throwAway(Item item) {
-        System.out.printf("You threw away %s,\n", item.getName());
-        items.remove(item.getName().toLowerCase());
-    }
+    public abstract Item throwAway(String itemName);
+
+    public abstract String getObject(String objName);
+    
+    public abstract void removeObject(String objName);
+
 
 }
 

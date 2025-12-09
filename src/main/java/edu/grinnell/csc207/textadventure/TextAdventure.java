@@ -1,6 +1,7 @@
 package edu.grinnell.csc207.textadventure;
 
 import edu.grinnell.csc207.textadventure.inventory.Inventory;
+import edu.grinnell.csc207.textadventure.inventory.item.Item;
 import edu.grinnell.csc207.textadventure.parser.Command;
 import edu.grinnell.csc207.textadventure.parser.Parser;
 import edu.grinnell.csc207.textadventure.room.*;
@@ -16,10 +17,19 @@ public class TextAdventure {
         Room hallway = new Hallway();
         Room parentroom = new ParentRoom();
 
+        Item mirror = new Item("mirror", "You can look at yourself.");
+        Item painting = new Item("painting", "It illustrates your dead body...?");
+        // We add objects in the constructor but items here
+        
+
         bedroom.addExit("north", hallway);
         hallway.addExit("south", bedroom);
         hallway.addExit("west", parentroom);
         parentroom.addExit("east", hallway);
+
+        bedroom.addItem(mirror);
+        hallway.addItem(painting);
+
 
         Room current = bedroom;
         current.enter();
@@ -31,6 +41,77 @@ public class TextAdventure {
 
             if (input.toLowerCase().equals("quit") || input.toLowerCase().equals("exit")) {
                 break; // Allow user to exit game when they want to.
+            }
+
+            Command cmd = Parser.parse(input);
+
+            switch (cmd.getArgument()) {
+                case "wait":
+                    System.out.println("You waited. Nothing happens... Duh?");
+                    break;
+                
+                case "go":
+                    if (cmd.getArgument() == null) {
+                        System.out.println("There's nowhere to go. Maybe go look at your E-girl LOL.");
+                    } else {
+                        Room next = current.getExit(cmd.getArgument());
+                        if (next == null) {
+                            System.out.printf("You can't go to %s!\n", cmd.getArgument());
+                        } else {
+                            current = next;
+                            System.out.println(next.getDescription());
+                        }
+                    }
+                    break;
+
+                case "look":
+                    if (cmd.getArgument() == null) {
+                        System.out.println(current.getDescription());
+                    } else {
+                        current.lookAt(cmd.getArgument());
+                    }
+                    break;
+
+                case "talk":
+                    if (cmd.getArgument() == null) {
+                        System.out.println("YOU HAVE NO FRIENDS WHO ARE YOU GONNA TALK TO LOL");
+                    } else {
+                        current.talkTo(cmd.getArgument());
+                    }
+                    break;
+
+                case "pickup":
+                    if (cmd.getArgument() == null) {
+                        System.out.println("Watchu tryna pick up stoopid?");
+                    } else {
+                        Item item = current.throwAway(cmd.getArgument());
+                        if (item == null) {
+                            System.out.printf("There is no %s here.\n", cmd.getArgument());
+                        } else {
+                            current.addItem(item);
+                            System.out.printf("You picked up the %s.\n", item.getName());
+                        }
+                    }
+                    break;
+
+                case "attack":
+                    if (cmd.getArgument() == null) {
+                        System.out.println("Watchu gonna attack bro?");
+                    } else {
+                        String obj = current.getObject(cmd.getArgument());
+                        if (obj == null) {
+                            System.out.printf("There is no %s here LOL\n", cmd.getArgument());
+                        } else {
+                            System.out.printf("You attacked the %s!", obj);
+                            System.out.println("You're so weak! You're cooked LOL");
+                            current.removeObject(obj);
+                        }
+                    }
+                    break;
+
+                default:
+                    System.out.println("What u saying dawg?");
+                    break;
             }
         }
 

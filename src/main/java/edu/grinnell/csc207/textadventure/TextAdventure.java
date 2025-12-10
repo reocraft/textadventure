@@ -2,6 +2,7 @@ package edu.grinnell.csc207.textadventure;
 
 import edu.grinnell.csc207.textadventure.inventory.Inventory;
 import edu.grinnell.csc207.textadventure.inventory.item.Item;
+import edu.grinnell.csc207.textadventure.inventory.item.GameOverItem;
 import edu.grinnell.csc207.textadventure.parser.Command;
 import edu.grinnell.csc207.textadventure.parser.Parser;
 import edu.grinnell.csc207.textadventure.room.*;
@@ -16,8 +17,11 @@ public class TextAdventure {
         Room bedroom = new Bedroom();
         Room hallway = new Hallway();
         Room parentroom = new ParentRoom();
+        Room showerRoom = new ShowerRoom();
 
-        Item mirror = new Item("mirror", "You can look at yourself.");
+        // Create mirror that causes game over when picked up
+        Item mirror = new GameOverItem("mirror", "You can look at yourself.",
+            "Look at you. You look so nasty and stinky! Go take a shower!");
         Item painting = new Item("painting", "It illustrates your dead body...?");
         // We add objects in the constructor but items here
         
@@ -25,6 +29,8 @@ public class TextAdventure {
         bedroom.addExit("north", hallway);
         hallway.addExit("south", bedroom);
         hallway.addExit("west", parentroom);
+        hallway.addExit("north", showerRoom);
+        showerRoom.addExit("south", hallway);
         parentroom.addExit("east", hallway);
 
         bedroom.addItem(mirror);
@@ -32,7 +38,10 @@ public class TextAdventure {
 
 
         Room current = bedroom;
-        current.enter();
+        boolean gameOver = current.enter();
+        if (gameOver) {
+            return;
+        }
 
         try (Scanner sc = new Scanner(System.in)) {
             while(true) {
@@ -59,7 +68,10 @@ public class TextAdventure {
                             System.out.printf("You can't go to %s!\n", cmd.getArgument());
                         } else {
                             current = next;
-                            current.enter();
+                            gameOver = current.enter();
+                            if (gameOver) {
+                                return;
+                            }
                         }
                     }
                     break;
@@ -67,6 +79,10 @@ public class TextAdventure {
                 case "look":
                     if (cmd.getArgument() == null) {
                         System.out.println(current.getDescription());
+                        String itemsDesc = current.getItemsDescription();
+                        if (!itemsDesc.isEmpty()) {
+                            System.out.println(itemsDesc);
+                        }
                     } else {
                         current.lookAt(cmd.getArgument());
                     }
@@ -90,6 +106,11 @@ public class TextAdventure {
                             System.out.printf("There is no %s here.\n", cmd.getArgument());
                         } else {
                             inv.add(item);
+                            // Check if item causes game over
+                            if (item.causesGameOver()) {
+                                item.onGameOver();
+                                return;
+                            }
                         }
                     }
                     break;

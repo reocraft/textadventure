@@ -18,9 +18,22 @@ public abstract class Room {
         this.description = description;
     }
 
-    public void enter() {
+    public boolean enter() {
         System.out.printf("You entered the %s.\n", name);
         System.out.println(description);
+        String itemsDesc = getItemsDescription();
+        if (!itemsDesc.isEmpty()) {
+            System.out.println(itemsDesc);
+        }
+        return checkGameOver();
+    }
+
+    /**
+     * Override this method in subclasses to trigger game over conditions.
+     * @return true if game over should occur, false otherwise
+     */
+    protected boolean checkGameOver() {
+        return false;
     }
 
     public String getName() {
@@ -73,6 +86,27 @@ public abstract class Room {
         } else {
             System.out.printf("Don't see %s here. Well you have no friends afterall.\n", target);
         }
+    }
+
+    /**
+     * Returns a list of items in this room.
+     * @return a string describing the items, or empty string if no items
+     */
+    public String getItemsDescription() {
+        if (items.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder("Items here: ");
+        boolean first = true;
+        for (Item item : items.values()) {
+            if (!first) {
+                sb.append(", ");
+            }
+            sb.append(item.getName());
+            first = false;
+        }
+        sb.append(".");
+        return sb.toString();
     }
 
     public abstract void pickUp(String itemName);

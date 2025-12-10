@@ -10,6 +10,14 @@ public class ParentRoom extends Room {
     }
 
     @Override
+    protected boolean checkGameOver() {
+        System.out.println("\nYour parents wake up and catch you!");
+        System.out.println("They're furious! You're grounded for life!");
+        System.out.println("\n=== GAME OVER ===");
+        return true;
+    }
+
+    @Override
     public void pickUp(String itemName) {
         Item item = items.get(itemName.toLowerCase());
         if (item != null) {

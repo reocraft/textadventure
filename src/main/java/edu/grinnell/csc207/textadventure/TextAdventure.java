@@ -18,8 +18,9 @@ public class TextAdventure {
         Room hallway = new Hallway();
         Room parentroom = new ParentRoom();
         Room showerRoom = new ShowerRoom();
+        Room trapRoom = new TrapRoom();
 
-        // Create mirror that causes game over when picked up
+        
         Item mirror = new GameOverItem("mirror", "You can look at yourself.",
             "Look at you. You look so nasty and stinky! Go take a shower!");
         Item painting = new Item("painting", "It illustrates your dead body...?");
@@ -30,6 +31,8 @@ public class TextAdventure {
         hallway.addExit("south", bedroom);
         hallway.addExit("west", parentroom);
         hallway.addExit("north", showerRoom);
+        hallway.addExit("east", trapRoom);
+        trapRoom.addExit("west", hallway);
         showerRoom.addExit("south", hallway);
         parentroom.addExit("east", hallway);
 
@@ -56,6 +59,10 @@ public class TextAdventure {
 
             switch (cmd.getAction()) {
                 case "wait":
+                    gameOver = current.onWait();
+                    if (gameOver) {
+                        return;
+                    }
                     System.out.println("You waited. Nothing happens... Duh?");
                     break;
                 

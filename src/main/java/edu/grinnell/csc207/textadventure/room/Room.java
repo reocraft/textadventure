@@ -36,6 +36,15 @@ public abstract class Room {
         return false;
     }
 
+    /**
+     * Called when the player uses the "wait" command in this room.
+     * Override this method in subclasses to add special behavior.
+     * @return true if game over should occur, false otherwise
+     */
+    public boolean onWait() {
+        return false;
+    }
+
     public String getName() {
         return name;
     }

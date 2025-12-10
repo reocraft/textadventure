@@ -34,18 +34,18 @@ public class TextAdventure {
         Room current = bedroom;
         current.enter();
 
-        Scanner sc = new Scanner(System.in);
-        while(true) {
+        try (Scanner sc = new Scanner(System.in)) {
+            while(true) {
             System.out.print("\n> ");
             String input = sc.nextLine().trim().toLowerCase();
 
-            if (input.toLowerCase().equals("quit") || input.toLowerCase().equals("exit")) {
+            if (input.equals("quit") || input.equals("exit")) {
                 break; // Allow user to exit game when they want to.
             }
 
             Command cmd = Parser.parse(input);
 
-            switch (cmd.getArgument()) {
+            switch (cmd.getAction()) {
                 case "wait":
                     System.out.println("You waited. Nothing happens... Duh?");
                     break;
@@ -59,7 +59,7 @@ public class TextAdventure {
                             System.out.printf("You can't go to %s!\n", cmd.getArgument());
                         } else {
                             current = next;
-                            System.out.println(next.getDescription());
+                            current.enter();
                         }
                     }
                     break;
@@ -81,6 +81,7 @@ public class TextAdventure {
                     break;
 
                 case "pickup":
+                case "pick up":
                     if (cmd.getArgument() == null) {
                         System.out.println("Watchu tryna pick up stoopid?");
                     } else {
@@ -88,10 +89,13 @@ public class TextAdventure {
                         if (item == null) {
                             System.out.printf("There is no %s here.\n", cmd.getArgument());
                         } else {
-                            current.addItem(item);
-                            System.out.printf("You picked up the %s.\n", item.getName());
+                            inv.add(item);
                         }
                     }
+                    break;
+
+                case "inventory":
+                    inv.list();
                     break;
 
                 case "attack":
@@ -113,9 +117,7 @@ public class TextAdventure {
                     System.out.println("What u saying dawg?");
                     break;
             }
+            }
         }
-
     }
-
-
 }

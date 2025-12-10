@@ -13,7 +13,6 @@ public class Inventory {
 
     public void add(Item item) {
         items.put(item.getName().toLowerCase(), item);
-        System.out.printf("You picked up the %s.\n", item.getName());
     }
 
     public boolean has(String itemName) {
@@ -32,8 +31,8 @@ public class Inventory {
         if (items.isEmpty()) {
             System.out.println("Your inventory is empty.");
         } else {
-            for (String itemName : items.keySet()) {
-                System.out.println("- " + itemName);
+            for (Item item : items.values()) {
+                System.out.println("- " + item.getName());
             }
         }
     }

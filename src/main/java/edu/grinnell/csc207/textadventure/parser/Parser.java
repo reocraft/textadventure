@@ -1,47 +1,40 @@
 package edu.grinnell.csc207.textadventure.parser;
-import java.util.Scanner;
 
 public class Parser {
-    private final Scanner in;
-
-    public Parser() {
-        this.in = new Scanner(System.in);
-    }
-
     public static Command parse(String input) {
 
         if (input.isEmpty()) {
             return new Command("", null);
         }
 
-        if (input.equals("wait".toLowerCase())) {
+        if (input.equals("wait")) {
             return new Command("wait", null);
         }
-        if (input.equals("inventory".toLowerCase())) {
+        if (input.equals("inventory")) {
             return new Command("inventory", null);
         }
-        if (input.equals("look".toLowerCase())) {
+        if (input.equals("look")) {
             return new Command("look", null);
         }
 
-        if (input.startsWith("go ".toLowerCase())) {
+        if (input.startsWith("go ")) {
             String direction = input.substring(3).trim();
             return new Command("go", direction);
         }
 
-        if (input.startsWith("look at ".toLowerCase())) {
+        if (input.startsWith("look at ")) {
             String target = input.substring(8).trim();
-            return new Command("look at", target);
+            return new Command("look", target);
         }
 
-        if (input.startsWith("talk to ".toLowerCase())) {
+        if (input.startsWith("talk to ")) {
             String target = input.substring(8).trim();
-            return new Command("talk to", target);
+            return new Command("talk", target);
         }
 
-        if (input.startsWith("pick up ".toLowerCase())) {
+        if (input.startsWith("pick up ")) {
             String target = input.substring(8).trim();
-            return new Command("pick up", target);
+            return new Command("pickup", target);
         }
 
         String[] phrase = input.split("\\s", 2);

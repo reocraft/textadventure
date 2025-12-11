@@ -1,6 +1,18 @@
 package edu.grinnell.csc207.textadventure.parser;
 
+/**
+ * Parses user input strings and converts them into Command objects
+ * that can be executed by the game.
+ */
 public class Parser {
+    /**
+     * Parses a user input string and converts it into a Command object.
+     * Recognizes commands such as "go", "look", "look at", "talk to", 
+     * "pick up", "wait", "inventory", and generic verb-noun commands.
+     * 
+     * @param input the user input string to parse (should be lowercase)
+     * @return a Command object representing the parsed command
+     */
     public static Command parse(String input) {
 
         if (input.isEmpty()) {

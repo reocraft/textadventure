@@ -1,10 +1,19 @@
 package edu.grinnell.csc207.textadventure.inventory.item;
 
+/**
+ * Represents an item that can be found in rooms and collected by the player.
+ * Items have a name and description, and can optionally trigger game over when picked up.
+ */
 public class Item {
 
     private final String name;
     private final String description;
 
+    /**
+     * Constructs a new Item with the given name and description.
+     * @param name the name of the item
+     * @param description the description of the item
+     */
     public Item(String name, String description) {
         this.name = name;
         this.description = description;

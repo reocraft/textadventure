@@ -91,7 +91,10 @@ public class TextAdventure {
                             System.out.println(itemsDesc);
                         }
                     } else {
-                        current.lookAt(cmd.getArgument());
+                        gameOver = current.lookAt(cmd.getArgument());
+                        if (gameOver) {
+                            return;
+                        }
                     }
                     break;
 

@@ -31,4 +31,21 @@ public class Hallway extends Room {
     public void removeObject(String objName) {
         objects.remove(objName.toLowerCase());
     }
+
+    @Override
+    public boolean lookAt(String target) {
+        // Special case: looking at the painting causes game over
+        if (target != null && target.toLowerCase().equals("painting")) {
+            Item item = items.get("painting");
+            if (item != null) {
+                System.out.println("You look at the painting more closely...");
+                System.out.println("It illustrates your dead body. Wait... what?");
+                System.out.println("The realization hits you - you've been dead all along!");
+                System.out.println("\n=== GAME OVER ===");
+                return true;
+            }
+        }
+        // For all other cases, use the parent's lookAt method
+        return super.lookAt(target);
+    }
 }

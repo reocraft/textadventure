@@ -86,7 +86,12 @@ public abstract class Room {
         }
     }
 
-    public void lookAt(String target) {
+    /**
+     * Looks at a target in the room.
+     * @param target the name of the item or object to look at
+     * @return true if game over should occur, false otherwise
+     */
+    public boolean lookAt(String target) {
         Item item = items.get(target.toLowerCase());
         if (item != null) {
             System.out.println(item.getDescription());
@@ -95,6 +100,7 @@ public abstract class Room {
         } else {
             System.out.printf("Don't see %s here. Well you have no friends afterall.\n", target);
         }
+        return false;
     }
 
     /**

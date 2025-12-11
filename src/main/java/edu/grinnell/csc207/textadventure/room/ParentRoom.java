@@ -11,8 +11,9 @@ public class ParentRoom extends Room {
 
     @Override
     protected boolean checkGameOver() {
-        System.out.println("\nYour parents wake up and catch you!");
-        System.out.println("They're furious! You're grounded for life!");
+        System.out.println("\nYour parents wake up and catch you from your horrendeous odor!");
+        System.out.println("They're maaaad. You are sent straight to the shower.");
+        System.out.println("You are a CS major. You are allergic to showers.");
         System.out.println("\n=== GAME OVER ===");
         return true;
     }
